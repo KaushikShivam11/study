@@ -1,0 +1,394 @@
+JAVASCRIPT 
+
+MUTATION : The Value of the Variable can be Changed to different Value at any point of Code 
+Example : 
+		var a = 10;
+		function(){
+			  } 
+		a = 19;
+
+COERCION : The Type of the variable can be changed to diffrent type based on the value assigned to the Variable .
+Example : 
+		var a = 10;
+		a = "Designer";
+
+
+TERNARY OPERATOR : 		Some Condition 		? 						True   						: 				False 
+								( Asking Question! If Its true)  (Acquire the First Value )
+								
+								
+								
+Funtion Definition & Function Expression :  Function calAge(){}  &  var calAge = Function(){}
+
+ Note : Function Declaration will not show undefined if called before Declaration
+But Function Expression will give undefined if called before. Variable Hoisting 
+
+
+Execution Context : Context Variable(Hoisting + Scope Chain + This) + Execution. Necessary For Hoisting Concept.
+
+Hoisting : At the time of Creation of Context Variable Hoisting is performed, There are certain rules of Hoisting 
+
+				1.) All the Variable are delcared and Assigned the Value Undefined.
+				2.) All the Function Decalartion are declared and pointed to the target function.
+				3.) Now the Execution is done(with defining variables)
+				
+Prototype : Object has a property Prototype that is used to achieve Inheritance. It adds the new Property or the function
+			to parent object but when you display the object the property will not show up, but to access the property ypu 
+			can object.property
+			
+			Creating it 
+			
+			var Person = function(name, job, yearOfBirth){
+					this.name = name; 
+					this.job = job;
+					this.yearOfBirth = yearOfBirth;
+			}
+			
+			Person.prototype.calAge = function(){
+					this.age = 2016 - this.yearOfBirth
+			}
+			
+			var John = new Person("john", "designer", 1992);
+			
+Object.create(): this method is used to create the Object but first making the Prototype and passing it as parameter 
+				 which creates an empty Object but have prototype properties in proto property of object, 
+				 after that we fill the object with its own properties.
+
+				Actaully it accepts two parameters one is prototype objecta nd second is the object of the value properties.
+				
+				var personProto = {
+						calcAge : function(){
+								console.log(2016 - this.yearOfBirth);
+						}
+				};
+				
+				var john = object.create(personProto); now it has personProto in proto property of object but its blank
+				john.name = "John";
+				john.yearOfBirth = 1992;
+				john.job = "Teacher";
+				
+				
+				Now There is one more wau to create by Passing Two Arguements
+				
+				var john = object.create(personProto,
+				{
+				  name :{value : 'John'};
+				  yearOfBirth : {value : 1992};
+				  job : {value : "Teacher"};
+				 }); 
+				  
+				  
+Primitive Vs Objects : 	Primitives Data type holds the value of the data assigned to them,
+						but the object variable always holds the address of the object not the real Data.
+						
+						So, if sometime you assign your first Primitive Variable to the other primitive Varible
+						and after that change the value of fisrt Varible the second variablr will always hold the value.
+						
+						But if the object is assigned to the other varible and the value in the first object are changed 
+						then the value of the second object will also change, The reason here is the address that is actually
+						stored not the actual data.
+						
+						
+						var a = 10;
+						var b = a;
+						
+						now changing valu of a will not impact the value of b.
+						a = 20;
+						console.log(a, b);  answer (20, 10) reason explained above.
+						
+						var obj1 = {
+						  age : 25,
+						  name : "John" 
+						};
+						
+						var obj2 = obj1;
+						
+						now if the change in the value of obj1 will impact the value obj2,
+						as var obj2 hold the address of the object that is obj1.
+						
+						so any change in obj1 is like changing obj2 as 'obj1' and 'obj2' are pointing to the 
+						same object.
+						
+						obj1.name = "Jonas";
+						console.log(obj1.name, obj2.name); answer ("Jonas", "Jonas") reason explained above.
+						
+
+Callback Functions : (First Class Function)	Callback function are passed as the parameter to the another functions 
+					  and called later from inside of that function.
+					  
+					  var ar = [1992, 1970, 1964, 1997];
+					  
+					  function calArr(arr, fn){
+							var arrRes = [];
+							
+							for (var i = 0; i < arr.length; i++){
+								arrRes.push(fn(arr[i]));
+							}
+							console.log(arrRes);
+					  }
+					  
+					  function calcAge(el){
+							return 2018 - el;
+					  }
+					  
+					  calArr(ar,calAge);
+					  
+Call, apply , Bind : All these methods are used to pass the "this" reference to the function with the parameters
+					
+					Call : It can be used for Passing the "this" reference to the function with the same number of Parameters,
+							that the function accepts.
+							
+							var john = {
+										name : "John",
+										age : 26,
+										job : "Teacher",
+										presentation : function(style, timeOfDay){
+												console.log("Hi I\"m "+this.name+" I\"m this.job and "+this.age+" years old, have a nice" + timeOfDay);
+										}
+							};
+							
+							var emilie = {
+										name : "Emilie",
+										age : 36,
+										job : "Designer"
+							};
+
+							john.presentation.call{emilie, "formal", "morning"};
+							
+							this call function can use emilie as a object because here the this refence is passed to the emilie object.
+							and the this.name, this.age, this.job all will now point to emilie.
+							
+					Bind : It can be used for attaching the default parameter to the function, 
+						   function will always have the same value of the parameter
+						   
+						   var styleFunction = john.presentation.bind(john, "morning");
+						   
+						   now presentation function will always have the "morning" as one parameter but 
+						   that way function should be like . only one parameter.
+						   
+						   presentation : function(timeOfDay){
+												console.log("Hi I\"m "+this.name+" I\"m this.job and "+this.age+" years old, have a nice" + timeOfDay);
+										}
+				
+Closures : 	Closures are the functions that returns the function and it also preserves the value of the parent function.
+			main benefit is that you can use the value of the parent function in the function that is returned by the closure 
+			and can perform operations using that value or on that value.
+			
+			
+				// example from budget app
+				function UiCtrl(){
+				  var domStrings = {
+				     incomeLabel : '.income_label'
+					 expensesLabel : '.exp_label'
+				  };
+				  
+				  return function(){
+				   // manuplate domStrings
+				   
+					domStrings;
+				  }
+				}
+			var manuplations = UiCtrl();
+			now manuplations will have the function returned by the UiCtrl and can be executed by manuplations();   
+						( //// manuplate domStrings domStrings;)
+				
+IIFEs : (Immidiately Invoked functions Execution or self executing functions )	They are delcared defined and executed as soon as the script runs
+				this is because of the way the are written
+				
+				(function(){
+				// function Body
+				
+				})();
+				
+				var UIController = (function(){
+				
+					return {
+						
+						addItem : function(type, des, val){            
+            
+							},
+        
+						deleteItem : function(type, ID){
+						
+						}
+					}
+				})();
+				
+				now UIController is IIFEs, it has the object returned to itself. To access addItem, do UIController.addItem();
+				
+ForEach : forEach it is used in place of for loop because of having better performance 
+			forEach is executed over the array and it accepts an callback back
+			
+			arr.forEach(function(current, index, array){
+				// current is the current element of the arr
+				// index is the index of the current element 
+				// array is pointing to the array in reference. here arr 
+			});
+			
+Map : 	Map is similar to forEach but it also returns the the array. It also accepts a callback function.
+
+			var arr1, arr2;
+			arr2 = arr1.map(function(current, index, array){
+			       
+				   //with some manipulations over the current array i.e. arr1, it will result an array that is returned into arr2.
+			});
+			
+Event Delegation :  Event Delegation involves the event propogation or event bubbling concept in it,
+					when we attach an event to the control then that event will propgate/bubble to its parent grand parent
+					and in similar way all the way to the DOM. But we can restrict it by the Method of event class i.e.
+					
+					event.stopPropogatation().
+					
+					now we can take the benefit of it and directly attach the event to the parent and capture the event as it 
+					bubbles up and can later find the target form where it is originated by
+					event.target  this will return the target of the event or source.
+					
+					used in scenarios like
+					1.) Lot of childer to a parent.
+					2.) when we need to attach the event to the element that is not in DOM but will com later.
+					
+					
+Modern JavaScript ES6
+
+let and const : let and const are block scoped where as var is function scoped, const do not support data Mutation as well data coercion.
+				let is similar to var just the difference is scope.
+				ex: 
+				dataTest function(){
+				 if(true){
+					let a = 20;
+					const b = 10;
+					}
+					console.log(a,b); // this will give error, as let is scoped only to the if block.
+				}
+				----------------------------------------------
+				dataTest function(){
+				 if(true){
+					var a = 20;
+					var b = 10;
+					}
+					console.log(a,b); // this will work, as let is function scoped.
+				}
+				---------------------------------------------------
+				dataTest function(){
+				 if(true){
+					let a = 20;
+					const b = 10;
+					b = 30; // this will give error as we cannot change the const value.
+					}
+				}
+
+Blocks and IIFEs ES6 : As IIFEs are used for data encapsulation and value remain private and connot be changed, this in ES6 can be achived by 
+						blocks, as the let has block scope and const cannot be changed.
+						
+Stirngs in ES6 : strings in ES5 are concatinated with variables by '+' operator, but now in ES6 they can be put underbackticks `` and
+					now they can be concatinated with variables just by ${}.
+					
+				ex:
+				let firstName = 'Don', lastName = 'John', job = 'Spy';
+				let Intro = `His name is ${firstName} ${lastName} and he is a ${Job}`;
+
+Arrow Function : Arrow function are used where you to want to pass the anonymous function(callback) or you wants to write in function expression.
+					
+					ex:
+					let age = function(year){
+						return 2018 - year;
+					}
+					
+					the above function expression can be written as below with arrow function
+					
+					let age = year => { return 2018 - year;}
+					
+					or if you wants to write the callback function
+					
+					let arr = [1,2,3,4,5];
+					let stringArr = arr.map(current => { current.toString();});
+					
+// Arrow lexical Scoping and Destructring is remaing //
+
+
+
+Arrays in ES6 : There are some new method that are added in ES6 arr.from(list), arr.findIndex(callback function), arr.find(callback function)
+				
+				ex: 
+				const elements = document.querySelectorAll('.class1' + '.class2' + '.class3');   //this will result in list.
+				now in ES5 to covert the list to array we need to do this 
+				Array.prototype.slice.call(elements);
+				
+				but now in ES6 we can direct do 
+				Array.from(elements); // this will results in Array.
+				
+				now we have an array arrAges = [16, 14, 23, 14, 12];
+				we need to find the index of element with full age 
+				
+				arrAges.findIndex(cur => {cur >= 18;}); //it accepts callback, this will find the index of the element of full age, it will be 2.
+				
+				we can also find the element value 
+
+				arrAges.find(cur => {cur >= 18;}); // it accepts callback, this will return the element.
+
+
+For_of loop in Array ES6 : This is used because in arr.forEach we cannot use the continue statement, as it we can pass array in the loop
+							and not as callback function.
+
+							for (const cur of arr){
+							 //cur it is the current element
+							 if (cur with some condition){
+								continue; // even te 'break' statement can be used
+							 }
+							}
+							
+Spread Operator : Spread operator is '...arrayName' while call the function we can pass the array with '...' and at function definition this 
+					parameter is spread into different parameters.
+					
+					function sum(a,b,c,d){
+					 retrun a+b+c+d;
+					}
+					var arr = [1,2,3,4];
+					
+					sum(...arr); 
+					
+Rest Parameter : Rest parameter is opposite of the spread operator and this time while defining the function we need to pass '...arrayName'
+					and while calling the function we need to pass the parameters explicitly 
+					
+					function sum(...Arr){
+						Arr.reduce(function(acc, cur){
+						  return acc + cur;
+						})
+					} 
+					
+					sum(1,2,3,4);
+					
+					
+Default Parameter : It is concept that is introduced in ES6, with this you can assign values to the parameter while defining the function.
+
+					ex : function PersonSmith(first, last = 'Smith', nationality = 'American'){
+							this.fisrtName = first;
+							this.lastName = last;
+							this.nationality = nationality;
+						}
+						
+						var john = new PersonSmith('John');
+						
+						// even we can overrite the default parameter
+						
+						var emilie = new PersonSmith('Emilie', 'Mcdoret', 'German');
+						
+Map : It is completely a new Data type that is introduced in ES6, it is similar to object but it has following benefits over object
+			
+				1. It can have any kind of primitive type key by which we can access the value suitably.
+				2. Maps are iterable and can be easily iterate like array with for, forEach and for of loops.
+				3. Size of the map can be easily found by the map.size property.
+				4. we can remove the entries of Map by delete method at keys 
+				
+				ex: const question = new Map();
+						  question.set('question', wht is the official name of the latest major JavaScript Version.); // here key is question
+						  question.set(1, 'ES5');
+						  question.set(2, 'ES6');  // here key is 2 a number
+						  question.set(3, 'ES2015');
+						  question.set(4, 'ES7');
+						  
+						  question.forEach((key, value)=> {
+						   // each key can be accessed here and value on each iteration to perform manipulations
+						  });
+						  
+						  question.delete(key); // pass the key as parameter to the delete method of Map.
